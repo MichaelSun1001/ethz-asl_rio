@@ -1,13 +1,13 @@
+# 执行命令
 catkin init
-
-catkin build -j10
-catkin_make -j20
-
+catkin clean -y
+catkin build -j20
 source devel/setup.bash
-
-
 roslaunch rio rio.launch visualize:=true
 
-注意：
-1、这个框架很离谱，不知道为什么必须把apt安装的ros-noetic-gtsam给卸载了才能正常运行。(虽然用apt安装的gtsam可以通过编译，使用源码安装的gtsam是gtsam-4.2.0)
-（现在是使用了自己本地apt安装的gtsam，编译成功了，但是运行就会报错；我把cmakelists中的gtsam_catkin依赖删掉了，把common、optimization的cpp和h文件中的一些函数和shared_ptr给改了，也改了一个包含的头文件）
+# 注意：
+1、不能使用apt安装的gtsam，需要使用源码安装的gtsam（4.2.0）
+2、gtsam_catkin这库会进行编译和安装作者自己自己fork的一个gtsam版本到这个工程里面而不是电脑环境里面。（作者的这个gtsam版本没有通过PR，所以只能克隆下来进行编译）
+3、
+
+

@@ -38,10 +38,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <thread>
 #include <utility>
 
-// #include <gtsam/nonlinear/FixedLagSmoother.h>
+#include <gtsam/nonlinear/FixedLagSmoother.h>
 #include <gtsam/nonlinear/NonlinearFactorGraph.h>
 #include <gtsam/nonlinear/Values.h>
-#include <gtsam_unstable/nonlinear/FixedLagSmoother.h>
 #include <gtsam_unstable/nonlinear/IncrementalFixedLagSmoother.h>
 
 #include "rio/Timing.h"
@@ -51,7 +50,7 @@ namespace rio {
 
 class Optimization {
  public:
-  Optimization() {};
+  Optimization(){};
   bool solve(const std::deque<Propagation>& propagations);
   bool getResult(std::deque<Propagation>* propagation,
                  std::map<std::string, Timing>* timing);
@@ -89,7 +88,7 @@ class Optimization {
       std::vector<gtsam::Vector1>* doppler_residuals = nullptr);
 
   void updateTiming(
-      const boost::shared_ptr<const ::gtsam::internal::TimingOutline>& variable,
+      const std::shared_ptr<const ::gtsam::internal::TimingOutline>& variable,
       const std::string& label, const ros::Time& stamp);
 
   gtsam::NonlinearFactorGraph new_graph_;

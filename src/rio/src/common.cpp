@@ -90,7 +90,7 @@ bool rio::loadPriorNoisePose(const ros::NodeHandle& nh,
     return false;
   *noise = noiseModel::Diagonal::Sigmas(
       (Vector6() << prior_noise_R_IB, prior_noise_I_p_IB).finished());
-  boost::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
+  std::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
       "prior_noise_model_I_T_IB: ");
   return true;
 }
@@ -102,8 +102,7 @@ bool rio::loadPriorNoiseVelocity(const ros::NodeHandle& nh,
   if (!loadParam<Vector3>(nh, "prior_noise/I_v_IB", &prior_noise_I_v_IB))
     return false;
   *noise = noiseModel::Diagonal::Sigmas(prior_noise_I_v_IB);
-
-  boost::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
+  std::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
       "prior_noise_model_I_v_IB: ");
   return true;
 }
@@ -118,7 +117,7 @@ bool rio::loadPriorNoiseImuBias(const ros::NodeHandle& nh,
     return false;
   *noise = noiseModel::Diagonal::Sigmas(
       (Vector6() << prior_noise_bias_acc, prior_noise_bias_gyro).finished());
-  boost::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
+  std::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
       "prior_noise_model_imu_bias: ");
   return true;
 }
@@ -141,7 +140,7 @@ bool rio::loadNoiseRadarRadialVelocity(const ros::NodeHandle& nh,
   switch (radar_doppler_loss) {
     case 0: {
       *noise = radar_gaussian_noise;
-      boost::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
+      std::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
           "Noise model radar radial velocity: ");
       break;
     }
@@ -149,7 +148,7 @@ bool rio::loadNoiseRadarRadialVelocity(const ros::NodeHandle& nh,
       const double c = 1.3998;
       *noise = noiseModel::Robust::Create(
           noiseModel::mEstimator::Fair::Create(c), radar_gaussian_noise);
-      boost::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
+      std::dynamic_pointer_cast<noiseModel::Robust>(*noise)->print(
           "Noise model radar radial velocity: ");
       break;
     }
@@ -157,7 +156,7 @@ bool rio::loadNoiseRadarRadialVelocity(const ros::NodeHandle& nh,
       const double k = 1.345;
       *noise = noiseModel::Robust::Create(
           noiseModel::mEstimator::Huber::Create(k), radar_gaussian_noise);
-      boost::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
+      std::dynamic_pointer_cast<noiseModel::Robust>(*noise)->print(
           "Noise model radar radial velocity: ");
       break;
     }
@@ -165,7 +164,7 @@ bool rio::loadNoiseRadarRadialVelocity(const ros::NodeHandle& nh,
       const double c = 2.3849;
       *noise = noiseModel::Robust::Create(
           noiseModel::mEstimator::Cauchy::Create(c), radar_gaussian_noise);
-      boost::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
+      std::dynamic_pointer_cast<noiseModel::Robust>(*noise)->print(
           "Noise model radar radial velocity: ");
       break;
     }
@@ -174,7 +173,7 @@ bool rio::loadNoiseRadarRadialVelocity(const ros::NodeHandle& nh,
       *noise = noiseModel::Robust::Create(
           noiseModel::mEstimator::GemanMcClure::Create(c),
           radar_gaussian_noise);
-      boost::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
+      std::dynamic_pointer_cast<noiseModel::Robust>(*noise)->print(
           "Noise model radar radial velocity: ");
       break;
     }
@@ -182,7 +181,7 @@ bool rio::loadNoiseRadarRadialVelocity(const ros::NodeHandle& nh,
       const double c = 2.9846;
       *noise = noiseModel::Robust::Create(
           noiseModel::mEstimator::Welsch::Create(c), radar_gaussian_noise);
-      boost::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
+      std::dynamic_pointer_cast<noiseModel::Robust>(*noise)->print(
           "Noise model radar radial velocity: ");
       break;
     }
@@ -190,7 +189,7 @@ bool rio::loadNoiseRadarRadialVelocity(const ros::NodeHandle& nh,
       const double c = 4.6851;
       *noise = noiseModel::Robust::Create(
           noiseModel::mEstimator::Tukey::Create(c), radar_gaussian_noise);
-      boost::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
+      std::dynamic_pointer_cast<noiseModel::Robust>(*noise)->print(
           "Noise model radar radial velocity: ");
       break;
     }
@@ -209,7 +208,7 @@ bool rio::loadNoiseRadarTrack(const ros::NodeHandle& nh,
   if (!loadParam<Vector3>(nh, "noise/radar/track", &noise_radar_track))
     return false;
   *noise = gtsam::noiseModel::Diagonal::Sigmas(noise_radar_track);
-  boost::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
+  std::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
       "Noise model radar track: ");
   return true;
 }
@@ -257,7 +256,7 @@ bool rio::loadNoiseLoopClosureT(const ros::NodeHandle& nh,
     return false;
   *noise = noiseModel::Diagonal::Sigmas(
       (Vector6() << noise_loop_closure_R, noise_loop_closure_p).finished());
-  boost::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
+  std::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
       "Noise model loop closure T: ");
   return true;
 }
@@ -270,7 +269,7 @@ bool rio::loadNoiseZeroVelocityPrior(const ros::NodeHandle& nh,
                          &noise_zero_velocity_prior))
     return false;
   *noise = noiseModel::Isotropic::Sigma(3, noise_zero_velocity_prior);
-  boost::dynamic_pointer_cast<noiseModel::Isotropic>(*noise)->print(
+  std::dynamic_pointer_cast<noiseModel::Isotropic>(*noise)->print(
       "Noise model zero velocity prior: ");
   return true;
 }
@@ -292,7 +291,7 @@ bool rio::loadNoiseBaroHeight(const ros::NodeHandle& nh,
   switch (baro_height_loss) {
     case 0: {
       *noise = baro_gaussian_noise;
-      boost::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
+      std::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
           "Noise model baro height: ");
       break;
     }
@@ -300,7 +299,7 @@ bool rio::loadNoiseBaroHeight(const ros::NodeHandle& nh,
       const double c = 1.3998;
       *noise = noiseModel::Robust::Create(
           noiseModel::mEstimator::Fair::Create(c), baro_gaussian_noise);
-      boost::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
+      std::dynamic_pointer_cast<noiseModel::Robust>(*noise)->print(
           "Noise model baro height: ");
       break;
     }
@@ -308,7 +307,7 @@ bool rio::loadNoiseBaroHeight(const ros::NodeHandle& nh,
       const double k = 1.345;
       *noise = noiseModel::Robust::Create(
           noiseModel::mEstimator::Huber::Create(k), baro_gaussian_noise);
-      boost::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
+      std::dynamic_pointer_cast<noiseModel::Robust>(*noise)->print(
           "Noise model baro height: ");
       break;
     }
@@ -316,7 +315,7 @@ bool rio::loadNoiseBaroHeight(const ros::NodeHandle& nh,
       const double c = 2.3849;
       *noise = noiseModel::Robust::Create(
           noiseModel::mEstimator::Cauchy::Create(c), baro_gaussian_noise);
-      boost::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
+      std::dynamic_pointer_cast<noiseModel::Robust>(*noise)->print(
           "Noise model baro height: ");
       break;
     }
@@ -324,7 +323,7 @@ bool rio::loadNoiseBaroHeight(const ros::NodeHandle& nh,
       const double c = 1.0;
       *noise = noiseModel::Robust::Create(
           noiseModel::mEstimator::GemanMcClure::Create(c), baro_gaussian_noise);
-      boost::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
+      std::dynamic_pointer_cast<noiseModel::Robust>(*noise)->print(
           "Noise model baro height: ");
       break;
     }
@@ -332,7 +331,7 @@ bool rio::loadNoiseBaroHeight(const ros::NodeHandle& nh,
       const double c = 2.9846;
       *noise = noiseModel::Robust::Create(
           noiseModel::mEstimator::Welsch::Create(c), baro_gaussian_noise);
-      boost::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
+      std::dynamic_pointer_cast<noiseModel::Robust>(*noise)->print(
           "Noise model baro height: ");
       break;
     }
@@ -340,7 +339,7 @@ bool rio::loadNoiseBaroHeight(const ros::NodeHandle& nh,
       const double c = 4.6851;
       *noise = noiseModel::Robust::Create(
           noiseModel::mEstimator::Tukey::Create(c), baro_gaussian_noise);
-      boost::dynamic_pointer_cast<noiseModel::Diagonal>(*noise)->print(
+      std::dynamic_pointer_cast<noiseModel::Robust>(*noise)->print(
           "Noise model baro height: ");
       break;
     }
